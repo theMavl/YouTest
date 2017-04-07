@@ -5,7 +5,7 @@
     <string name="next_question">Следующий</string>
     <string name="previous_question">Предыдущий</string>
     <string name="multi_question">Выберите несколько вариантов</string>
-    <string name="radioactive_question">Выберите один вариатн</string>
+    <string name="radioactive_question">Выберите один вариант</string>
     <string name="writing_question">Напишите ответ</string>
     <string name="edit_mode">Редактор</string>
     <string name="test_mode">Пройти тест</string>

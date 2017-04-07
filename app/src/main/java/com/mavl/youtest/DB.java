@@ -44,6 +44,7 @@ public class DB extends SQLiteOpenHelper {
 
          s = "CREATE TABLE "+ QUESTIONS_TABLE + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "testID INTEGER NOT NULL," +
+                "number INTEGER NOT NULL," +
                 "type INTEGER NOT NULL DEFAULT 0, " +
                 "questionText TEXT NOT NULL," +
                 "time INTEGER NOT NULL DEFAULT 0, " +

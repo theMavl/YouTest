@@ -10,6 +10,7 @@ public class Question {
     int ID;
     int testID;
     int type;
+    int number;
     String questionText;
     int time;
     int cost;
@@ -19,10 +20,11 @@ public class Question {
 
     Question() {}
 
-    public Question(int ID, int testID, int type, String questionText, int time, int cost, String pic, int[] correctOptions, ArrayList<String> options) {
+    public Question(int ID, int testID, int type, int number, String questionText, int time, int cost, String pic, int[] correctOptions, ArrayList<String> options) {
         this.ID = ID;
         this.testID = testID;
         this.type = type;
+        this.number = number;
         this.questionText = questionText;
         this.time = time;
         this.cost = cost;
@@ -108,5 +110,14 @@ public class Question {
             return false;
         options.add(optionText);
         return true;
+    }
+
+    public static int[] parseCorrects(String line) {
+        int[] corrects = new int[10];
+        String[] arrLine = line.split(";");
+        for (int i = 0; i < 10; i++) {
+            corrects[i] = Integer.parseInt(arrLine[i]);
+        }
+        return corrects;
     }
 }

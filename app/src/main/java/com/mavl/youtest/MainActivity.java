@@ -2,26 +2,40 @@ package com.mavl.youtest;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     DB db;
+    Button btTestMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        db = new DB(this);
+        DataBaseCommunication dbComm = new DataBaseCommunication(this);
+        btTestMode = (Button) findViewById(R.id.btTestMode);
+        db = dbComm.db;
         gimmeAdmin();
         mindGap();
+
+        btTestMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToTest = new Intent();
+                int testID = 0;
+                goToTest.putExtra("testID", testID);
+            }
+        });
     }
 
     void gimmeAdmin() {
