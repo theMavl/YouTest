@@ -98,8 +98,7 @@ public class Test {
     }
 
     public static String sqlInsertString(String tableName, String shortName, int authorID, String description, int time, boolean random, int mode, String pass) {
-        return "INSERT INTO " + tableName + " VALUES (" + shortName + ", "+ authorID + ", "
-                + description + ", "+ time + ", "+ ((random)?1:0) + ", "
-                + mode + ", "+ pass +")";
+        return "INSERT INTO " + tableName + "(shortName, description, time, random, mode, pass) VALUES (\"" + shortName + "\", \"" + description + "\", "+ time + ", "+ ((random)?1:0) + ", "
+                + mode + ", \""+ pass +"\");";
     }
 }
