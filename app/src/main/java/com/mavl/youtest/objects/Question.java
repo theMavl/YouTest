@@ -1,6 +1,9 @@
-package com.mavl.youtest;
+package com.mavl.youtest.objects;
+
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by mavl on 27.03.2017.
@@ -15,8 +18,9 @@ public class Question {
     int time;
     int cost;
     String pic;
-    int[] correctOptions;
-    ArrayList<String> options;
+    String userAnswer;
+    public int[] correctOptions;
+    public ArrayList<String> options;
 
     Question() {}
 
@@ -30,7 +34,8 @@ public class Question {
         this.cost = cost;
         this.pic = pic;
         this.correctOptions = correctOptions;
-        this.options = options;
+        this.options = (ArrayList<String>)options.clone();
+        Log.d("new Question", this.options.toString() +" "+this.options.size()+" "+this);
     }
 
     public int getID() {
@@ -105,6 +110,8 @@ public class Question {
         this.options.set(id, newText);
     }
 
+    public int getOptionsNumber() { return options.size(); }
+
     public boolean addOption(String optionText) {
         if (this.options.size() > 9)
             return false;
@@ -115,9 +122,29 @@ public class Question {
     public static int[] parseCorrects(String line) {
         int[] corrects = new int[10];
         String[] arrLine = line.split(";");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < arrLine.length; i++) {
             corrects[i] = Integer.parseInt(arrLine[i]);
         }
         return corrects;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public String getUserAnswer() {
+        return this.userAnswer;
+    }
+
+    public int checkUserAnswer() {
+        String[] answer = userAnswer.split(";");
+        switch (this.type) {
+            case 0:
+                int a = Integer.parseInt(answer[0]);
+                if (a == correctOptions[0])
+                    return this.cost;
+                break;
+        }
+        return 0;
     }
 }

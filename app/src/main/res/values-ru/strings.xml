@@ -9,4 +9,12 @@
     <string name="writing_question">Напишите ответ</string>
     <string name="edit_mode">Редактор</string>
     <string name="test_mode">Пройти тест</string>
+    <string name="score_point">балл</string>
+    <string name="empty_answer">Ответ не может быть пустым!</string>
+    <string name="select_test">Выберите тест из списка</string>
+    <string name="test_results">Результаты теста</string>
+    <string name="time_start">Время начала:\t</string>
+    <string name="time_end">Время конца:\t</string>
+    <string name="correct_answers">Правильный ответ:\t</string>
+    <string name="user_answers">Ваш ответ:\t</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.mavl.youtest;
+package com.mavl.youtest.objects;
 
 /**
  * Created by mavl on 27.03.2017.
@@ -16,7 +16,7 @@ public class Test {
 
     Test() {}
 
-    public Test(/*int ID, */String shortName, int authorID, String description, int time, boolean random, int mode, String pass) {
+    public Test(int ID, String shortName, int authorID, String description, int time, boolean random, int mode, String pass) {
         //this.ID = ID;
         this.shortName = shortName;
         this.authorID = authorID;
@@ -91,14 +91,4 @@ public class Test {
         this.pass = pass;
     }
 
-    public String sqlThisInsertString(String tableName) {
-        return "INSERT INTO " + tableName + " VALUES (" + this.shortName + ", "+ this.authorID + ", "
-                + this.description + ", "+ this.time + ", "+ ((this.random)?1:0) + ", "
-                + this.mode + ", "+ this.pass +")";
-    }
-
-    public static String sqlInsertString(String tableName, String shortName, int authorID, String description, int time, boolean random, int mode, String pass) {
-        return "INSERT INTO " + tableName + "(shortName, description, time, random, mode, pass) VALUES (\"" + shortName + "\", \"" + description + "\", "+ time + ", "+ ((random)?1:0) + ", "
-                + mode + ", \""+ pass +"\");";
-    }
 }

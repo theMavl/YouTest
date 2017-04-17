@@ -16,6 +16,7 @@ public class DB extends SQLiteOpenHelper {
     private static final String TESTS_TABLE = "tests";
     private static final String USERS_TABLE = "users";
     private static final String RESULTS_TABLE = "results";
+    private static final String BY_QUESTION_RESULTS_TABLE = "qresults";
 
     public DB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,10 +58,21 @@ public class DB extends SQLiteOpenHelper {
         s = "CREATE TABLE "+ RESULTS_TABLE + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "userID INTEGER NOT NULL, " +
                 "testID INTEGER NOT NULL, " +
-                "score INTEGER NOT NULL, " +
-                "mark INTEGER NOT NULL, " +
+                "score INTEGER, " +
+                "mark INTEGER, " +
+                "timeBegin TEXT NOT NULL, " +
+                "timeFinish TEXT NOT NULL, " +
                 "FOREIGN KEY(userID) REFERENCES users(_id)" +
                 "FOREIGN KEY(testID) REFERENCES tests(_id))";
+        sqLiteDatabase.execSQL(s);
+
+        s = "CREATE TABLE "+ BY_QUESTION_RESULTS_TABLE + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "resultID INTEGER NOT NULL, " +
+                "questionID INTEGER NOT NULL, " +
+                "userAnswer TEXT NOT NULL, " +
+                "score INTEGER NOT NULL, " +
+                "FOREIGN KEY(resultID) REFERENCES results(_id)" +
+                "FOREIGN KEY(questionID) REFERENCES questions(_id))";
         sqLiteDatabase.execSQL(s);
 
 
@@ -68,5 +80,6 @@ public class DB extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
     }
 }
