@@ -29,6 +29,7 @@ public class SelectTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_test);
+        setTitle(getResources().getString(R.string.select_test));
         db = DataBaseCommunication.db;
 
         // TodoDatabaseHandler is a SQLiteOpenHelper class connecting to SQLite

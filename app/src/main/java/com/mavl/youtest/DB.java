@@ -36,6 +36,7 @@ public class DB extends SQLiteOpenHelper {
         s = "CREATE TABLE "+ TESTS_TABLE + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "shortName TEXT NOT NULL, " +
                 "authorID INTEGER NOT NULL, " +
+                "questionsNum INTEGER NOT NULL DEFAULT 0, " +
                 "description TEXT NOT NULL, " +
                 "time INTEGER NOT NULL DEFAULT 0, " +
                 "random INTEGER NOT NULL DEFAULT 0, " +

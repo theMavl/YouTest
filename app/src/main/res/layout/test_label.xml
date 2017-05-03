@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp">
 
@@ -19,14 +20,14 @@
         android:layout_height="wrap_content"
         android:text="Study cursors"
         android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_weight="1" />
+        android:layout_weight="1" />
 
         <TextView
-            android:text="Дохрена вопросов"
+            android:id="@+id/tvQN"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
             android:layout_weight="1"
+            android:text="Дохрена вопросов"
             android:textAlignment="textEnd"
             android:textStyle="normal|italic" />
     </LinearLayout>

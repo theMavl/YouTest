@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         db = dbComm.db;
         gimmeAdmin();
         dummyTest();
-        mindGap();
 
         btTestMode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
             value.put("shortName", "First Test");
             value.put("authorID", 0);
             value.put("description", "The first test ever just for debug purposes");
+            value.put("questionsNum", 2);
             tempDB.insert("tests", null, value);
 
             value.put("shortName", "Second Test");
             value.put("authorID", 0);
             value.put("description", "The author feels like creating more tests for students");
+            value.put("questionsNum", 2);
             tempDB.insert("tests", null, value);
 
             value.put("shortName", "Third Test");

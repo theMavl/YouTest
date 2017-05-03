@@ -1,5 +1,8 @@
 package com.mavl.youtest;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.ListViewCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -52,15 +56,44 @@ public class TestResults extends AppCompatActivity {
         tmpCursor.close();
 
         // Get questionTexts, user answers, correct answers and score
-        cursor = tempDB.rawQuery("select qresults._id, questions.questionText, qresults.userAnswer, questions.correctOptions, qresults.score, questions.cost \n" +
+        cursor = tempDB.rawQuery("select qresults._id, questions.questionText, questions.type, qresults.userAnswer, questions.correctOptions, qresults.score, questions.cost \n" +
                 "from qresults\n" +
                 "join results on qresults.resultID = results._id\n" +
                 "join questions on qresults.questionID = questions._id\n" +
                 "where resultID = ?", new String[]{ resultID+"" });
         totalQuestions = cursor.getCount();
-        ResultQuestionsListAdapter adapter = new ResultQuestionsListAdapter(this, cursor);
+        final ResultQuestionsListAdapter adapter = new ResultQuestionsListAdapter(this, cursor);
         lvResults.setAdapter(adapter);
+        lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                showQuestionDialog((int)adapter.getItemId(i), adapter.getCursor());
+            }
+        });
+    }
 
+
+    public void showQuestionDialog(int id, Cursor cursor) {
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("View question");
+
+
+        View linearlayout = getLayoutInflater().inflate(R.layout.question_layout, null);
+
+
+
+        dialog.setView(linearlayout);
+
+        dialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        dialog.create();
+        dialog.show();
     }
 
     public void exit(View view) {
