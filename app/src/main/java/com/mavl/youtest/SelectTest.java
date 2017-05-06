@@ -15,6 +15,10 @@ import com.mavl.youtest.listAdapters.QuickAdapter;
 import java.util.ArrayList;
 
 public class SelectTest extends AppCompatActivity {
+    public final static int MODE_TEST = 0;
+    public final static int MODE_EDIT = 1;
+
+    int mode;
     DB db;
     Cursor cursor;
     ArrayList<Integer> testsList = new ArrayList<>();
@@ -29,6 +33,10 @@ public class SelectTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_test);
+
+        Intent intent = getIntent();
+        mode = intent.getIntExtra("mode", -1);
+
         setTitle(getResources().getString(R.string.select_test));
         db = DataBaseCommunication.db;
 
@@ -44,6 +52,12 @@ public class SelectTest extends AppCompatActivity {
         QuickAdapter adapter = new QuickAdapter(this, cursor);
         // Attach cursor adapter to the ListView
         lvTests.setAdapter(adapter);
+
+        if (mode == MODE_EDIT) {
+            View addNewButton = getLayoutInflater().inflate(R.layout.add_new_layout, null);
+            lvTests.addFooterView(addNewButton);
+        }
+
         cursor.moveToFirst();
         do {
             testsList.add(cursor.getInt(cursor.getColumnIndex("_id")));
@@ -56,8 +70,19 @@ public class SelectTest extends AppCompatActivity {
         lvTests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                int selectedTestID = testsList.get(pos);
-                Intent goToTest = new Intent(getApplicationContext(), theTest.class);
+                int selectedTestID;
+                if (pos < testsList.size())
+                    selectedTestID = testsList.get(pos);
+                else
+                    selectedTestID = -2; // new test
+
+                Intent goToTest;
+
+                if (mode == MODE_EDIT)
+                    goToTest = new Intent(getApplicationContext(), EditTestActivity.class);
+                else
+                    goToTest = new Intent(getApplicationContext(), theTest.class);
+
                 goToTest.putExtra("testID", selectedTestID);
                 Log.d("on-item-click", "Test id = " + selectedTestID+ " "+testsList.toString());
                 startActivity(goToTest);

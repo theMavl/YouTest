@@ -18,6 +18,11 @@
         <activity android:name=".theTest" />
         <activity android:name=".SelectTest" />
         <activity android:name=".TestResults" />
+        <activity android:name=".EditTestActivity_old" />
+        <activity
+            android:name=".EditTestActivity"
+            android:label="@string/title_activity_edit_test"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
