@@ -7,7 +7,7 @@ import android.content.Context;
  */
 
 public class DataBaseCommunication {
-    static DB db;
+    public static DB db;
     DataBaseCommunication(Context context) {
         db = new DB(context);
     }
