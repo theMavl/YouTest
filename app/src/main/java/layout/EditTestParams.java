@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +20,12 @@ import android.widget.TextView;
 
 import com.mavl.youtest.DB;
 import com.mavl.youtest.DataBaseCommunication;
+import com.mavl.youtest.EditTestActivity;
 import com.mavl.youtest.R;
 import com.mavl.youtest.objects.Test;
 
-public class EditTestParams extends AppCompatActivity {
+public class EditTestParams extends Fragment {
+
     final int INSERT = 0;
     final int EDIT = 1;
 
@@ -35,24 +39,22 @@ public class EditTestParams extends AppCompatActivity {
     EditText etDescr;
     Test thisQuestion;
     Switch swRandom;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_test_params);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_edit_test_params, container, false);
 
+        tvTestID = (TextView) view.findViewById(R.id.tvTestID);
+        tvAuthor = (TextView) view.findViewById(R.id.tvAuthor);
+        etName = (EditText) view.findViewById(R.id.etName);
+        etDescr = (EditText) view.findViewById(R.id.etDescr);
+        swRandom = (Switch) view.findViewById(R.id.swRandom);
 
-        tvTestID = (TextView) findViewById(R.id.tvTestID);
-        tvAuthor = (TextView) findViewById(R.id.tvAuthor);
-        etName = (EditText) findViewById(R.id.etName);
-        etDescr = (EditText) findViewById(R.id.etDescr);
-        swRandom = (Switch) findViewById(R.id.swRandom);
-
-        Intent intent = getIntent();
         db = DataBaseCommunication.db;
-        testID = intent.getIntExtra("testID", -1);
 
         if (testID == -1)
-            finish();
+            onDestroy();
         if (testID == -2) {
             tvTestID.setText("New test");
             mode = INSERT;
@@ -82,5 +84,23 @@ public class EditTestParams extends AppCompatActivity {
                 tvAuthor.setText("Undefined");
             cursor.close();
         }
+
+
+        return view;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        testID = getArguments().getInt("testID", -1);
+
     }
+
+    public static EditTestParams newInstance(int testID) {
+        EditTestParams editTestParams = new EditTestParams();
+        Bundle args = new Bundle();
+        args.putInt("testID", testID);
+        editTestParams.setArguments(args);
+        return editTestParams;
+    }
+}
