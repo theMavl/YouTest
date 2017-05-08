@@ -245,49 +245,9 @@ public class theTest extends AppCompatActivity {
         Cursor cursor = tempDB.query("questions", null, "testID = " + testID, null, null, null, "number");
         //cursor.moveToFirst();
 
-            int ID;
-            int type;
-            int number;
-            String questionText;
-            int time;
-            int cost;
-            String pic;
-            String tmpOption;
-            int[] correctOptions;
-            ArrayList<String> options = new ArrayList<>();
-            int columnID = cursor.getColumnIndex("_id");
-            int columnNumber = cursor.getColumnIndex("number");
-            int columnType = cursor.getColumnIndex("type");
-            int columnQuestionText = cursor.getColumnIndex("questionText");
-            int columnTime = cursor.getColumnIndex("time");
-            int columnCost = cursor.getColumnIndex("cost");
-            int columnCorrectOptions = cursor.getColumnIndex("correctOptions");
-            int columnOption1 = cursor.getColumnIndex("option1");
         if (cursor.moveToFirst()) {
             do {
-                ID = cursor.getInt(columnID);
-                type = cursor.getInt(columnType);
-                number = cursor.getInt(columnNumber);
-                questionText = cursor.getString(columnQuestionText);
-                time = cursor.getInt(columnTime);
-                cost = cursor.getInt(columnCost);
-
-                correctOptions = Question.parseCorrects(cursor.getString(columnCorrectOptions));
-                int j = 0;
-                for (int i = columnOption1; i < columnOption1+10; i++) {
-                    tmpOption = cursor.getString(i);
-
-                    if (tmpOption != null) {
-                        options.add(j, tmpOption);
-                        Log.d("get"+i, cursor.getString(i)+"");
-                        j++;
-                    }
-                    else
-                        break;
-                }
-                Log.d("get", options.toString());
-                questionsList.add(new Question(ID, testID, type, number, questionText, time, cost, "", correctOptions, options));
-                options.clear();
+                questionsList.add(new Question(cursor));
             }
             while (cursor.moveToNext());
             for (Question x: questionsList) {

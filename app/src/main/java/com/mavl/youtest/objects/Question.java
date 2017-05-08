@@ -1,5 +1,6 @@
 package com.mavl.youtest.objects;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -23,6 +24,38 @@ public class Question {
     public ArrayList<String> options;
 
     Question() {}
+
+    public Question(Cursor cursor) {
+        String tmpOption;
+        int columnID = cursor.getColumnIndex("_id");
+        int columnNumber = cursor.getColumnIndex("number");
+        int columnType = cursor.getColumnIndex("type");
+        int columnQuestionText = cursor.getColumnIndex("questionText");
+        int columnTime = cursor.getColumnIndex("time");
+        int columnCost = cursor.getColumnIndex("cost");
+        int columnCorrectOptions = cursor.getColumnIndex("correctOptions");
+        int columnOption1 = cursor.getColumnIndex("option1");
+
+        this.ID = cursor.getInt(columnID);
+        this.type = cursor.getInt(columnType);
+        this.number = cursor.getInt(columnNumber);
+        this.questionText = cursor.getString(columnQuestionText);
+        this.time = cursor.getInt(columnTime);
+        this.cost = cursor.getInt(columnCost);
+
+        this.correctOptions = Question.parseCorrects(cursor.getString(columnCorrectOptions));
+        int j = 0;
+        for (int i = columnOption1; i < columnOption1+10; i++) {
+            tmpOption = cursor.getString(i);
+
+            if (tmpOption != null) {
+                this.options.add(j, tmpOption);
+                j++;
+            }
+            else
+                break;
+        }
+    }
 
     public Question(int ID, int testID, int type, int number, String questionText, int time, int cost, String pic, int[] correctOptions, ArrayList<String> options) {
         this.ID = ID;
