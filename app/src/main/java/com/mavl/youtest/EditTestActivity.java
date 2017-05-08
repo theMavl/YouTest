@@ -64,6 +64,11 @@ public class EditTestActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_save) {
+            // Save test
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

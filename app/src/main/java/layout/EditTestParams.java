@@ -14,7 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -70,8 +72,13 @@ public class EditTestParams extends Fragment {
             thisQuestion = new Test();
         }
 
+        final LinearLayout lyPass = (LinearLayout)(view.findViewById(R.id.lyPass));
+        Switch swPass = (Switch) view.findViewById(R.id.swPass);
+
         if (mode == EDIT) {
             cursor = tempDB.query(DB.TESTS_TABLE, null, "_id = " + testID, null, null, null, null);
+            cursor.moveToFirst();
+            String pass = cursor.getString(cursor.getColumnIndex("pass"));
             Log.d("edit", cursor.getCount() + "");
             thisQuestion = new Test(cursor);
             etName.setText(thisQuestion.getShortName());
@@ -82,8 +89,28 @@ public class EditTestParams extends Fragment {
                 tvAuthor.setText(cursor.getString(cursor.getColumnIndex("displayName")));
             else
                 tvAuthor.setText("Undefined");
+
+            if (pass == null) {
+                lyPass.setVisibility(View.GONE);
+                swRandom.setChecked(false);
+            }
+            else {
+                ((TextView) view.findViewById(R.id.etPass)).setText(pass);
+                lyPass.setVisibility(View.VISIBLE);
+                swPass.setChecked(true);
+
+            }
             cursor.close();
         }
+
+
+
+        swPass.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                lyPass.setVisibility(isChecked? View.VISIBLE: View.GONE);
+            }
+        });
 
 
         return view;
