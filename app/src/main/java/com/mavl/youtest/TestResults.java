@@ -79,11 +79,13 @@ public class TestResults extends AppCompatActivity {
         dialog.setTitle("View question");
 
 
-        View linearlayout = getLayoutInflater().inflate(R.layout.question_layout, null);
+        View view = getLayoutInflater().inflate(R.layout.question_layout, null);
+
+        TextView qt = (TextView) view.findViewById(R.id.txtQuestionType);
 
 
 
-        dialog.setView(linearlayout);
+        dialog.setView(view);
 
         dialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
