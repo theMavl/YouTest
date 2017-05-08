@@ -111,8 +111,7 @@ public class theTest extends AppCompatActivity {
         Log.d("renderQuestion", questionsList +" "+currentQuestion.options.toString());
         String questionText = currentQuestion.getQuestionText();
         ArrayList<String> options = currentQuestion.options;
-        int questionType = currentQuestion.getType();
-        txtQuestionType.setText(questionTypeString(questionType));
+        txtQuestionType.setText(currentQuestion.getTypeString(getApplicationContext()));
         txtQuestionText.setText(questionText);
         updateInfoBar();
         renderButtons();
@@ -222,18 +221,6 @@ public class theTest extends AppCompatActivity {
                 break;
         }
 
-    }
-
-    String questionTypeString(int type) {
-        switch (type) {
-            case 0:
-                return getResources().getString(R.string.radioactive_question);
-            case 1:
-                return getResources().getString(R.string.multi_question);
-            case 2:
-                return getResources().getString(R.string.writing_question);
-        }
-        return "";
     }
 
     boolean getQuestions(int testID) {

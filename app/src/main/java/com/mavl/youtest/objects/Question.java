@@ -1,7 +1,10 @@
 package com.mavl.youtest.objects;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
+
+import com.mavl.youtest.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +24,7 @@ public class Question {
     String pic;
     String userAnswer;
     public int[] correctOptions;
-    public ArrayList<String> options;
+    public ArrayList<String> options = new ArrayList<>();
 
     Question() {}
 
@@ -163,6 +166,18 @@ public class Question {
 
     public void setUserAnswer(String userAnswer) {
         this.userAnswer = userAnswer;
+    }
+
+    public String getTypeString(Context context) {
+        switch (type) {
+            case 0:
+                return context.getResources().getString(R.string.radioactive_question);
+            case 1:
+                return context.getResources().getString(R.string.multi_question);
+            case 2:
+                return context.getResources().getString(R.string.writing_question);
+        }
+        return "";
     }
 
     public String getUserAnswer() {
