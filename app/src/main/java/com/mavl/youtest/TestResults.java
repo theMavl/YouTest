@@ -7,16 +7,25 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListViewCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.mavl.youtest.listAdapters.ResultQuestionsListAdapter;
+import com.mavl.youtest.objects.Question;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +47,11 @@ public class TestResults extends AppCompatActivity {
     TextView tvTimeFinish;
     TextView tvDate;
 
+    LinearLayout lyOptions;
+    RadioGroup radioGroup;
+    RadioButton[] radioButtons = new RadioButton[10];
+    ImageView questionPic;
+    boolean buttonsAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,26 +99,88 @@ public class TestResults extends AppCompatActivity {
         totalQuestions = cursor.getCount();
         final ResultQuestionsListAdapter adapter = new ResultQuestionsListAdapter(this, cursor);
         lvResults.setAdapter(adapter);
+        setListViewHeightBasedOnChildren(lvResults);
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showQuestionDialog((int)adapter.getItemId(i), adapter.getCursor());
+                showQuestionDialog((int)adapter.getItemId(i));
             }
         });
-
-
     }
 
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
 
-    public void showQuestionDialog(int id, Cursor cursor) {
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ActionBar.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount()));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    public void showQuestionDialog(int id) {
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("View question");
-
+        //dialog.setTitle("View question");
+        Cursor cursor;
+        int questionID;
+        String userAnswer;
+        SQLiteDatabase tempDB = db.getWritableDatabase();
+        cursor = tempDB.rawQuery("select * from "+DB.BY_QUESTION_RESULTS_TABLE+" where _id = "+id,null);
+        cursor.moveToFirst();
+        questionID = cursor.getInt(cursor.getColumnIndex("questionID"));
+        userAnswer = cursor.getString(cursor.getColumnIndex("userAnswer"));
+        cursor = tempDB.rawQuery("select * from "+DB.QUESTIONS_TABLE+" where _id = "+questionID,null);
+        cursor.moveToFirst();
+        Question currentQuestion = new Question(cursor);
+        cursor.close();
+        currentQuestion.setUserAnswer(userAnswer);
 
         View view = getLayoutInflater().inflate(R.layout.question_layout, null);
-
         TextView qt = (TextView) view.findViewById(R.id.txtQuestionType);
+        TextView qn = (TextView) view.findViewById(R.id.txtQuestionText);
+        questionPic = (ImageView) view.findViewById(R.id.questionPic);
+        lyOptions = (LinearLayout) view.findViewById(R.id.lyOptions);
+        radioGroup = new RadioGroup(this);
+
+        qt.setText(currentQuestion.getTypeString(this));
+        qn.setText(currentQuestion.getQuestionText());
+
+        if (!buttonsAvailable)
+            initOptionViews();
+
+        switch (currentQuestion.getType()) {
+            case 0:
+                int nUserAnswer = Integer.parseInt(userAnswer);
+                questionPic.setVisibility(View.GONE);
+                for (int i = 0; i < currentQuestion.getOptionsNumber(); i++) {
+                    Log.d("render-buttons", "added "+i);
+                    radioButtons[i].setText(currentQuestion.getOption(i));
+                    if ((i+1) == nUserAnswer)
+                        radioButtons[i].setChecked(true);
+                    else
+                        radioButtons[i].setChecked(false);
+                    radioGroup.addView(radioButtons[i]);
+                }
+                lyOptions.addView(radioGroup);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
 
 
 
@@ -113,6 +189,9 @@ public class TestResults extends AppCompatActivity {
         dialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        lyOptions.removeAllViews();
+                        radioGroup.removeAllViews();
+
                         dialog.dismiss();
                     }
                 });
@@ -123,5 +202,14 @@ public class TestResults extends AppCompatActivity {
 
     public void exit(View view) {
         finish();
+    }
+
+    void initOptionViews() {
+        radioGroup = new RadioGroup(this);
+        for (int i = 0; i < 10; i++) {
+            radioButtons[i] = new RadioButton(this);
+            radioButtons[i].setClickable(false);
+        }
+        buttonsAvailable = true;
     }
 }
