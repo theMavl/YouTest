@@ -197,7 +197,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="exit"
-                android:text="@android:string/ok" />
+                android:text="@android:string/ok"
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

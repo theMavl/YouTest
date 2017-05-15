@@ -115,6 +115,7 @@ public class TestResults extends AppCompatActivity {
 
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
         int totalHeight = 0;
+        int lastHeight = 0;
         View view = null;
         for (int i = 0; i < listAdapter.getCount(); i++) {
             view = listAdapter.getView(i, view, listView);
@@ -122,8 +123,10 @@ public class TestResults extends AppCompatActivity {
                 view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ActionBar.LayoutParams.WRAP_CONTENT));
 
             view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
+            lastHeight = view.getMeasuredHeight();
+            totalHeight += lastHeight;
         }
+        totalHeight+=lastHeight;
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount()));
         listView.setLayoutParams(params);
