@@ -18,6 +18,10 @@ import android.widget.TextView;
 
 import com.mavl.youtest.listAdapters.ResultQuestionsListAdapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TestResults extends AppCompatActivity {
 
     Intent intent;
@@ -30,6 +34,9 @@ public class TestResults extends AppCompatActivity {
     Cursor cursor;
     ListView lvResults;
     TextView tvTestName;
+    TextView tvTimeBegin;
+    TextView tvTimeFinish;
+    TextView tvDate;
 
 
     @Override
@@ -38,6 +45,9 @@ public class TestResults extends AppCompatActivity {
         setContentView(R.layout.activity_test_results);
         lvResults = (ListView) findViewById(R.id.lvResults);
         tvTestName = (TextView)findViewById(R.id.tvTestName);
+        tvTimeBegin = (TextView)findViewById(R.id.tvTimeBegin);
+        tvTimeFinish = (TextView)findViewById(R.id.tvTimeFinish);
+        tvDate = (TextView)findViewById(R.id.tvDate);
 
         intent = getIntent();
         resultID = intent.getIntExtra("resultID", -1);
@@ -46,13 +56,24 @@ public class TestResults extends AppCompatActivity {
 
         SQLiteDatabase tempDB = db.getWritableDatabase();
         Log.d("get-results", "Trying to get the name of "+resultID);
-        Cursor tmpCursor = tempDB.rawQuery("select results._id, tests.shortName\n" +
+        Cursor tmpCursor = tempDB.rawQuery("select results._id, tests.shortName, results.timeBegin, results.timeFinish\n" +
                 "from results\n" +
                 "join tests on results.testID = tests._id\n" +
                 "where results._id = ?", new String[]{ resultID+"" });
         tmpCursor.moveToFirst();
         testName = tmpCursor.getString(tmpCursor.getColumnIndex("shortName"));
         tvTestName.setText(testName);
+
+
+
+        String[] timeBegin = tmpCursor.getString(tmpCursor.getColumnIndex("timeBegin")).split("\t");
+        String[] timeFinish = tmpCursor.getString(tmpCursor.getColumnIndex("timeFinish")).split("\t");
+
+
+        tvTimeBegin.setText(timeBegin[1]);
+        tvTimeFinish.setText(timeFinish[1]);
+        tvDate.setText(timeBegin[0]);
+
         tmpCursor.close();
 
         // Get questionTexts, user answers, correct answers and score
@@ -70,6 +91,8 @@ public class TestResults extends AppCompatActivity {
                 showQuestionDialog((int)adapter.getItemId(i), adapter.getCursor());
             }
         });
+
+
     }
 
 

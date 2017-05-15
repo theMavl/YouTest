@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     DB db;
     Button btTestMode;
     Button btEditorMode;
+    Button btStatictic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btTestMode = (Button) findViewById(R.id.btTestMode);
         btEditorMode = (Button) findViewById(R.id.btEditorMode);
+        btStatictic = (Button) findViewById(R.id.btStatistic);
         DataBaseCommunication dbComm = new DataBaseCommunication(this);
         db = dbComm.db;
         gimmeAdmin();
@@ -53,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(goToTest);
             }
         });
+
+        btStatictic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToTest = new Intent(getApplicationContext(), StatisticActivity.class);
+                startActivity(goToTest);
+            }
+        });
     }
 
     void gimmeAdmin() {
@@ -68,12 +78,6 @@ public class MainActivity extends AppCompatActivity {
             tempDB.insert("users", null, value);
         }
         c.close();
-    }
-
-    public void debugResult(View view) {
-        Intent intent = new Intent(this, TestResults.class);
-        intent.putExtra("resultID", 24);
-        startActivity(intent);
     }
 
     void dummyTest() {
