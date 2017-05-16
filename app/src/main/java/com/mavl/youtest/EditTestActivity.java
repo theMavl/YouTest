@@ -85,7 +85,7 @@ public class EditTestActivity extends AppCompatActivity {
                 case 0:
                     return EditTestParams.newInstance(testID);
                 case 1:
-                    return new EditTestQuestions();
+                    return EditTestQuestions.newInstance(testID);
                 default:
                     return new EditTestQuestions();
             }

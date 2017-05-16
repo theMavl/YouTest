@@ -26,7 +26,7 @@ public class Question {
     public int[] correctOptions;
     public ArrayList<String> options = new ArrayList<>();
 
-    Question() {}
+    public Question() {}
 
     public Question(Cursor cursor) {
         String tmpOption;
@@ -157,7 +157,7 @@ public class Question {
 
     public static int[] parseCorrects(String line) {
         int[] corrects = new int[10];
-        String[] arrLine = line.split(";");
+        String[] arrLine = line.split("\t");
         for (int i = 0; i < arrLine.length; i++) {
             corrects[i] = Integer.parseInt(arrLine[i]);
         }
@@ -185,12 +185,18 @@ public class Question {
     }
 
     public int checkUserAnswer() {
-        String[] answer = userAnswer.split(";");
+        String[] answer = userAnswer.split("\t");
         switch (this.type) {
             case 0:
                 int a = Integer.parseInt(answer[0]);
                 if (a == correctOptions[0])
                     return this.cost;
+                break;
+            case 1:
+                boolean[] inAnsw = new boolean[10];
+
+                break;
+            case 2:
                 break;
         }
         return 0;

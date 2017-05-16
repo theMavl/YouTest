@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -35,6 +37,8 @@ public class theTest extends AppCompatActivity {
     LinearLayout lyOptions;
     RadioGroup radioGroup;
     RadioButton[] radioButtons = new RadioButton[10];
+    CheckBox[] checkBoxes = new CheckBox[10];
+    EditText writeAnswer;
     Button btPrevious;
     Button btFinish;
     Button btNext;
@@ -64,7 +68,7 @@ public class theTest extends AppCompatActivity {
         //btFinish = (Button)findViewById(R.id.btFinish);
         btNext = (Button)findViewById(R.id.btNext);
         testProgress = (ProgressBar)findViewById(R.id.testProgress);
-        initRadioButtons();
+        initOptionVievs();
 
         Intent intent = getIntent();
         db = DataBaseCommunication.db;
@@ -91,11 +95,20 @@ public class theTest extends AppCompatActivity {
         return datetime;
     }
 
-    void initRadioButtons() {
+    void initOptionVievs() {
         radioGroup = new RadioGroup(this);
         for (int i = 0; i < 10; i++) {
             radioButtons[i] = new RadioButton(this);
         }
+        writeAnswer = new EditText(this);
+        for (int i = 0; i < 10; i++) {
+            checkBoxes[i] = new CheckBox(this);
+        }
+    }
+
+    void clearCheckBoxes() {
+        for (CheckBox a: checkBoxes)
+            a.setChecked(false);
     }
 
     void updateInfoBar() {
@@ -131,8 +144,18 @@ public class theTest extends AppCompatActivity {
                         }
                     break;
                 case 1:
+                    String answer = new String();
+                    for (int i = 0; i < currentQuestion.getOptionsNumber(); i++)
+                        if (checkBoxes[i].isChecked()) {
+                            answer += (i+1)+"\t";
+                            //currentQuestion.setUserAnswer((i+1)+"");
+                            //answers[currentQuestionID] = (i + 1) + "";
+                            //break checkButtons;
+                        }
+                    currentQuestion.setUserAnswer(answer);
                     break;
                 case 2:
+                    currentQuestion.setUserAnswer(writeAnswer.getText().toString());
                     break;
             }
             txtQuestionType.setTextColor(getColor(android.R.color.holo_red_dark));
@@ -216,8 +239,16 @@ public class theTest extends AppCompatActivity {
                 lyOptions.addView(radioGroup);
                 break;
             case 1:
+                clearCheckBoxes();
+                for (int i = 0; i < currentQuestion.getOptionsNumber(); i++) {
+                    Log.d("render-buttons", "added "+i);
+                    checkBoxes[i].setText(currentQuestion.getOption(i));
+                    lyOptions.addView(checkBoxes[i]);
+                }
                 break;
             case 2:
+                writeAnswer.setText("");
+                lyOptions.addView(writeAnswer);
                 break;
         }
 
