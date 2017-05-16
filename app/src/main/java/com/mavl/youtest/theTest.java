@@ -89,7 +89,7 @@ public class theTest extends AppCompatActivity {
     }
 
     String saveTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy\tHH:mm");
         Date date = new Date();
         String datetime = dateFormat.format(date);
         return datetime;

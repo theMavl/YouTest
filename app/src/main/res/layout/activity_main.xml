@@ -33,9 +33,8 @@
         android:id="@+id/btEditorMode" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btStatistic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="debugResult"
-        android:text="Button" />
+        android:text="@string/statistic_mode" />
 </LinearLayout>

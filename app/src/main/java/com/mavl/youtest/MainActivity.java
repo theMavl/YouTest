@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     DB db;
     Button btTestMode;
     Button btEditorMode;
+    Button btStatictic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btTestMode = (Button) findViewById(R.id.btTestMode);
         btEditorMode = (Button) findViewById(R.id.btEditorMode);
+        btStatictic = (Button) findViewById(R.id.btStatistic);
         DataBaseCommunication dbComm = new DataBaseCommunication(this);
         db = dbComm.db;
         gimmeAdmin();
@@ -53,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(goToTest);
             }
         });
+
+        btStatictic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToTest = new Intent(getApplicationContext(), StatisticActivity.class);
+                startActivity(goToTest);
+            }
+        });
     }
 
     void gimmeAdmin() {
@@ -70,12 +80,6 @@ public class MainActivity extends AppCompatActivity {
         c.close();
     }
 
-    public void debugResult(View view) {
-        Intent intent = new Intent(this, TestResults.class);
-        intent.putExtra("resultID", 24);
-        startActivity(intent);
-    }
-
     void dummyTest() {
 
         SQLiteDatabase tempDB = db.getWritableDatabase();
@@ -85,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
             value.put("shortName", "First Test");
             value.put("authorID", 0);
             value.put("description", "The first test ever just for debug purposes");
-            value.put("questionsNum", 2);
+            value.put("questionsNum", 4);
             tempDB.insert("tests", null, value);
 
             value.put("shortName", "Second Test");
             value.put("authorID", 0);
             value.put("description", "The author feels like creating more tests for students");
-            value.put("questionsNum", 2);
+            value.put("questionsNum", 0);
             tempDB.insert("tests", null, value);
 
             value.put("shortName", "Third Test");
@@ -125,6 +129,23 @@ public class MainActivity extends AppCompatActivity {
             value.put("correctOptions", "1");
             value.put("option1", "Stop doing this");
             value.put("option2", "Please");
+            tempDB.insert("questions", null, value);
+
+            value.put("testID", 1);
+            value.put("number", 3);
+            value.put("questionText", "At last you are smart clever enough");
+            value.put("correctOptions", "1");
+            value.put("option1", "Noooo");
+            value.put("option2", "Screw you");
+            tempDB.insert("questions", null, value);
+
+            value.put("testID", 1);
+            value.put("number", 4);
+            value.put("cost", 4);
+            value.put("questionText", "Shut up");
+            value.put("correctOptions", "1");
+            value.put("option1", "Damn it");
+            value.put("option2", "Gggg");
             tempDB.insert("questions", null, value);
         }
         c.close();
