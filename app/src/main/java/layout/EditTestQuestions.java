@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +47,6 @@ public class EditTestQuestions extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_test_questions, container, false);
-
         db = DataBaseCommunication.db;
         SQLiteDatabase tempDB = db.getWritableDatabase();
         cursor = tempDB.query(DB.QUESTIONS_TABLE, null, "testID = " + testID, null, null, null, "number");
@@ -58,7 +58,6 @@ public class EditTestQuestions extends Fragment {
                 questions.add(new Question(cursor));
             } while (cursor.moveToNext());
         }
-        questions.add(new Question());
         ql = (RecyclerView) view.findViewById(R.id.ql);
         qlManager = new LinearLayoutManager(getActivity());
         ql.setLayoutManager(qlManager);

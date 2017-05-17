@@ -29,20 +29,43 @@ public class EditTestActivity extends AppCompatActivity {
     int testID;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_test);
+        fab = (FloatingActionButton)findViewById(R.id.eFab);
+        fab.setVisibility(View.GONE);
         Intent intent = getIntent();
         testID = intent.getIntExtra("testID", -1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.addView(new TextView(this));
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("li", position+"");
+                switch (position) {
+                    case 1:
+                        fab.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        fab.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+        });
     }
 
     @Override
@@ -83,8 +106,10 @@ public class EditTestActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
+
                     return EditTestParams.newInstance(testID);
                 case 1:
+
                     return EditTestQuestions.newInstance(testID);
                 default:
                     return new EditTestQuestions();

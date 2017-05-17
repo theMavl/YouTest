@@ -30,4 +30,5 @@
     <string name="select_result">Select saved result</string>
     <string name="statistic_mode">Statistic</string>
     <string name="no_results">No results found</string>
+    <string name="title_activity_fabtest">fabtest</string>
 </resources>
