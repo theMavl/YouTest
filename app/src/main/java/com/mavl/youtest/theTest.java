@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.AsyncListUtil;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -58,6 +60,8 @@ public class theTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_the_test);
 
+
+
         txtQuestionText = (TextView)findViewById(R.id.txtQuestionText);
         txtQuestionType = (TextView)findViewById(R.id.txtQuestionType);
         txtCounter = (TextView)findViewById(R.id.txtCounter);
@@ -75,12 +79,14 @@ public class theTest extends AppCompatActivity {
         testID = intent.getIntExtra("testID", -1);
         Log.d("the-test", "Got id = "+testID);
         if (getQuestions(testID)) {
+
             totalQuestions = questionsList.size();
             testProgress.setProgress(0);
             testProgress.setMax(totalQuestions);
             answers = new String[totalQuestions];
             timeStart = saveTime();
             renderQuestion();
+            TestTimer timer = new TestTimer(228);
         }
         else {
             Log.d("GetQuestions", "Empty!");
@@ -277,5 +283,34 @@ public class theTest extends AppCompatActivity {
 
         cursor.close();
         return true;
+    }
+}
+
+class TestTimer extends AsyncTask<Integer, Integer, Void> {
+    int time;
+    public TestTimer(int time) {
+        super();
+        this.time = time;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+
+    }
+
+    @Override
+    protected Void doInBackground(Integer... integers) {
+        return null;
     }
 }

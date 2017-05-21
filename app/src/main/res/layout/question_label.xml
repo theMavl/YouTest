@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/theLabel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -17,9 +18,9 @@
             android:id="@+id/tvText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="This is dummy question who..."
-            android:textAppearance="@android:style/TextAppearance.Material.Large"
-            android:layout_weight="1" />
+            android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <TextView
             android:id="@+id/tvCost"

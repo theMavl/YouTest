@@ -18,7 +18,7 @@
     <string name="correct_answers">Correct answer:\t</string>
     <string name="title_activity_login">Sign in</string>
 
-    <string name="test_name">Test name</string>
+    <string name="test_name" translatable="false">Test name</string>
     <string name="test_description">Test description</string>
     <string name="title_activity_edit_test">Test editor</string>
     <string name="action_settings">Settings</string>
@@ -31,4 +31,14 @@
     <string name="statistic_mode">Statistic</string>
     <string name="no_results">No results found</string>
     <string name="title_activity_fabtest">fabtest</string>
+    <string name="test_params_tab">Test params</string>
+    <string name="questions_tab">Questions</string>
+    <string name="request_password">This action requests pasword</string>
+    <string name="title_activity_edit_question">EditQuestionActivity</string>
+
+    <string-array name="question_type">
+        <item>Single choice</item>
+        <item>Multiple choice</item>
+        <item>Write-in</item>
+    </string-array>
 </resources>

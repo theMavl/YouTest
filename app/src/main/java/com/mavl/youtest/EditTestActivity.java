@@ -1,6 +1,9 @@
 package com.mavl.youtest;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -29,12 +32,18 @@ public class EditTestActivity extends AppCompatActivity {
     int testID;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    public static AppBarLayout appBarLayout;
+    public static CoordinatorLayout main_content;
     FloatingActionButton fab;
+    public static Activity fa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_test);
+        fa = this;
+        appBarLayout = (AppBarLayout)findViewById(R.id.appbar);
+        main_content = (CoordinatorLayout)findViewById(R.id.main_content);
         fab = (FloatingActionButton)findViewById(R.id.eFab);
         fab.setVisibility(View.GONE);
         Intent intent = getIntent();
@@ -125,9 +134,9 @@ public class EditTestActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Test params";
+                    return getResources().getString(R.string.test_params_tab);
                 case 1:
-                    return "Questions";
+                    return getResources().getString(R.string.questions_tab);
             }
             return null;
         }

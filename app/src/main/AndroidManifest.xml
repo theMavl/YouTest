@@ -15,21 +15,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".theTest"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".theTest"
+            android:screenOrientation="portrait" />
         <activity android:name=".SelectTest" />
         <activity android:name=".TestResults" />
         <activity android:name=".EditTestActivity_old" />
         <activity
             android:name=".EditTestActivity"
             android:label="@string/edit_mode"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".StatisticActivity" />
         <activity
             android:name=".fabtest"
             android:label="@string/title_activity_fabtest"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditQuestionActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

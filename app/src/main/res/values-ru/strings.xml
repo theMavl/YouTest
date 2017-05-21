@@ -22,4 +22,13 @@
     <string name="select_result">Выберите сохраненный результат</string>
     <string name="statistic_mode">Статистика</string>
     <string name="no_results">Результатов нет</string>
+    <string name="test_params">Параметры теста</string>
+    <string name="test_params_tab">Параметры теста</string>
+    <string name="questions_tab">Вопросы</string>
+    <string name="request_password">Это действие запрашивает пароль</string>
+    <string-array name="question_type">
+        <item>Один правильный</item>
+        <item>Несколько правильных</item>
+        <item>Ввести ответ</item>
+    </string-array>
 </resources>

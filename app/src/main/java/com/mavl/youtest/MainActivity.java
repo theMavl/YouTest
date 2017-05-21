@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             value.put("authorID", 0);
             value.put("description", "The first test ever just for debug purposes");
             value.put("questionsNum", 4);
+            value.put("pass", "228");
             tempDB.insert("tests", null, value);
 
             value.put("shortName", "Second Test");

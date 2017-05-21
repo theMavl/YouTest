@@ -23,6 +23,7 @@ public class Question {
     int cost;
     String pic;
     String userAnswer;
+    boolean isRemovedFromListInEditor;
     public int[] correctOptions;
     public ArrayList<String> options = new ArrayList<>();
 
@@ -134,6 +135,14 @@ public class Question {
         return correctOptions;
     }
 
+    public boolean isRemovedFromListInEditor() {
+        return isRemovedFromListInEditor;
+    }
+
+    public void setRemovedFromListInEditor(boolean removedFromListInEditor) {
+        isRemovedFromListInEditor = removedFromListInEditor;
+    }
+
     public void setCorrectOptions(int[] correctOptions) {
         this.correctOptions = correctOptions;
     }
@@ -153,6 +162,14 @@ public class Question {
             return false;
         options.add(optionText);
         return true;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public static int[] parseCorrects(String line) {
@@ -184,7 +201,14 @@ public class Question {
         return this.userAnswer;
     }
 
+    public static void syncNumbersAndPos(ArrayList<Question> qInput) {
+        for (int i = 0; i < qInput.size(); i++)
+            qInput.get(i).number = i;
+    }
+
     public int checkUserAnswer() {
+        if (userAnswer == null)
+            return 0;
         String[] answer = userAnswer.split("\t");
         switch (this.type) {
             case 0:
