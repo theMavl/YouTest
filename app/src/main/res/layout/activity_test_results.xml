@@ -144,11 +144,12 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/tvScore"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView"
+                            android:text="10/10"
+                            android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
                     </LinearLayout>
 
@@ -174,11 +175,12 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
                         <TextView
-                            android:id="@+id/textView6"
+                            android:id="@+id/tvMark"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView"
+                            android:text="2"
+                            android:textAlignment="center"
                             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
                     </LinearLayout>
 

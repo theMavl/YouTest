@@ -24,13 +24,14 @@ public class Question {
     String pic;
     String userAnswer;
     boolean isRemovedFromListInEditor;
-    public int[] correctOptions;
-    public ArrayList<String> options = new ArrayList<>();
+    //public boolean[] correctOptions = new boolean[10];
+    public ArrayList<Option> options = new ArrayList<>();
 
     public Question() {}
 
     public Question(Cursor cursor) {
-        String tmpOption;
+        Option tmpOption;
+        String option;
         int columnID = cursor.getColumnIndex("_id");
         int columnNumber = cursor.getColumnIndex("number");
         int columnType = cursor.getColumnIndex("type");
@@ -47,12 +48,13 @@ public class Question {
         this.time = cursor.getInt(columnTime);
         this.cost = cursor.getInt(columnCost);
 
-        this.correctOptions = Question.parseCorrects(cursor.getString(columnCorrectOptions));
+        boolean[] correctOptions = Question.parseCorrects(cursor.getString(columnCorrectOptions));
+
         int j = 0;
         for (int i = columnOption1; i < columnOption1+10; i++) {
-            tmpOption = cursor.getString(i);
-
-            if (tmpOption != null) {
+            option = cursor.getString(i);
+            if (option != null) {
+                tmpOption = new Option(cursor.getString(i), correctOptions[j+1]);
                 this.options.add(j, tmpOption);
                 j++;
             }
@@ -61,7 +63,7 @@ public class Question {
         }
     }
 
-    public Question(int ID, int testID, int type, int number, String questionText, int time, int cost, String pic, int[] correctOptions, ArrayList<String> options) {
+    public Question(int ID, int testID, int type, int number, String questionText, int time, int cost, String pic, /*boolean[] correctOptions, */ArrayList<String> options) {
         this.ID = ID;
         this.testID = testID;
         this.type = type;
@@ -70,8 +72,8 @@ public class Question {
         this.time = time;
         this.cost = cost;
         this.pic = pic;
-        this.correctOptions = correctOptions;
-        this.options = (ArrayList<String>)options.clone();
+        //this.correctOptions = correctOptions;
+        this.options = (ArrayList<Option>)options.clone();
         Log.d("new Question", this.options.toString() +" "+this.options.size()+" "+this);
     }
 
@@ -127,13 +129,20 @@ public class Question {
         return pic;
     }
 
+    public ArrayList<String> getOptionsLabels() {
+        ArrayList<String> r = new ArrayList<String>();
+        for (Option x: options)
+            r.add(x.getText());
+        return r;
+    }
+
     public void setPic(String pic) {
         this.pic = pic;
     }
 
-    public int[] getCorrectOptions() {
+    /*public boolean[] getCorrectOptions() {
         return correctOptions;
-    }
+    }*/
 
     public boolean isRemovedFromListInEditor() {
         return isRemovedFromListInEditor;
@@ -143,16 +152,16 @@ public class Question {
         isRemovedFromListInEditor = removedFromListInEditor;
     }
 
-    public void setCorrectOptions(int[] correctOptions) {
+    /*public void setCorrectOptions(boolean[] correctOptions) {
         this.correctOptions = correctOptions;
-    }
+    }*/
 
-    public String getOption(int id) {
+    public Option getOption(int id) {
         return options.get(id);
     }
 
-    public void setOption(int id, String newText) {
-        this.options.set(id, newText);
+    public void setOption(int id, Option newOption) {
+        this.options.set(id, newOption);
     }
 
     public int getOptionsNumber() { return options.size(); }
@@ -160,7 +169,7 @@ public class Question {
     public boolean addOption(String optionText) {
         if (this.options.size() > 9)
             return false;
-        options.add(optionText);
+        options.add(new Option(optionText));
         return true;
     }
 
@@ -172,11 +181,13 @@ public class Question {
         this.number = number;
     }
 
-    public static int[] parseCorrects(String line) {
-        int[] corrects = new int[10];
+    public static boolean[] parseCorrects(String line) {
+        boolean[] corrects = new boolean[11];
         String[] arrLine = line.split("\t");
+        int n;
         for (int i = 0; i < arrLine.length; i++) {
-            corrects[i] = Integer.parseInt(arrLine[i]);
+            n = Integer.parseInt(arrLine[i]);
+            corrects[n] = true;
         }
         return corrects;
     }
@@ -213,7 +224,7 @@ public class Question {
         switch (this.type) {
             case 0:
                 int a = Integer.parseInt(answer[0]);
-                if (a == correctOptions[0])
+                if (options.get(a-1).isCorrect())
                     return this.cost;
                 break;
             case 1:

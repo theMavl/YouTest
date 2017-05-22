@@ -33,7 +33,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditQuestionActivity"
-            android:screenOrientation="portrait" />
+            android:label="@string/question_editor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

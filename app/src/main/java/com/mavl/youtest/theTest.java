@@ -129,7 +129,7 @@ public class theTest extends AppCompatActivity {
         currentQuestion = questionsList.get(currentQuestionID);
         Log.d("renderQuestion", questionsList +" "+currentQuestion.options.toString());
         String questionText = currentQuestion.getQuestionText();
-        ArrayList<String> options = currentQuestion.options;
+        ArrayList<String> options = currentQuestion.getOptionsLabels();
         txtQuestionType.setText(currentQuestion.getTypeString(getApplicationContext()));
         txtQuestionText.setText(questionText);
         updateInfoBar();
@@ -205,7 +205,7 @@ public class theTest extends AppCompatActivity {
             score = currentQuestion.checkUserAnswer();
             if (score > 0) {
                 results[i] = score;
-                userScore++;
+                userScore += score;
             }
             valueQresults.put("resultID", resultID);
             valueQresults.put("questionID", currentQuestion.getID());
@@ -228,7 +228,7 @@ public class theTest extends AppCompatActivity {
 
     void renderButtons() {
         //currentQuestion = questionsList.get(currentQuestionID);
-        Log.d("renderButtons", currentQuestion.toString()+" "+currentQuestion.options.toString()+" "+currentQuestion.correctOptions[0]);
+        //Log.d("renderButtons", currentQuestion.toString()+" "+currentQuestion.options.toString()+" "+currentQuestion.correctOptions[0]);
         Log.d("renderButtons", currentQuestion.getQuestionText()+" "+currentQuestion.getOption(0));
         lyOptions.removeAllViews();
         radioGroup.removeAllViews();
@@ -238,7 +238,7 @@ public class theTest extends AppCompatActivity {
                 questionPic.setVisibility(View.GONE);
                 for (int i = 0; i < currentQuestion.getOptionsNumber(); i++) {
                     Log.d("render-buttons", "added "+i);
-                    radioButtons[i].setText(currentQuestion.getOption(i));
+                    radioButtons[i].setText(currentQuestion.getOption(i).getText());
                     radioGroup.addView(radioButtons[i]);
                 }
                 radioGroup.clearCheck();
@@ -248,7 +248,7 @@ public class theTest extends AppCompatActivity {
                 clearCheckBoxes();
                 for (int i = 0; i < currentQuestion.getOptionsNumber(); i++) {
                     Log.d("render-buttons", "added "+i);
-                    checkBoxes[i].setText(currentQuestion.getOption(i));
+                    checkBoxes[i].setText(currentQuestion.getOption(i).getText());
                     lyOptions.addView(checkBoxes[i]);
                 }
                 break;

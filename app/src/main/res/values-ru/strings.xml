@@ -31,4 +31,6 @@
         <item>Несколько правильных</item>
         <item>Ввести ответ</item>
     </string-array>
+    <string name="question_editor">Редактор вопроса</string>
+    <string name="question_cost">Балл:\t</string>
 </resources>

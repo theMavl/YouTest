@@ -41,4 +41,6 @@
         <item>Multiple choice</item>
         <item>Write-in</item>
     </string-array>
+    <string name="question_editor">Question editor</string>
+    <string name="question_cost">Cost:\t</string>
 </resources>

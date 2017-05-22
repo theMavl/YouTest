@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             value.put("authorID", 0);
             value.put("description", "The first test ever just for debug purposes");
             value.put("questionsNum", 4);
-            value.put("pass", "228");
             tempDB.insert("tests", null, value);
 
             value.put("shortName", "Second Test");
@@ -121,6 +120,14 @@ public class MainActivity extends AppCompatActivity {
             value.put("correctOptions", "1");
             value.put("option1", "Nope");
             value.put("option2", "So what?");
+            value.put("option3", "Gsdgsadga");
+            value.put("option4", "asdgasdg");
+            value.put("option5", "dsfhsdfh");
+            value.put("option6", "ertgdfgfsd");
+            value.put("option7", "cxvbxcvb");
+            value.put("option8", "ertwert");
+            value.put("option9", "cmvbcv");
+            value.put("option10", "rtgsdfgsd");
             tempDB.insert("questions", null, value);
 
             value.clear();

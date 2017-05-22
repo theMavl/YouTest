@@ -44,7 +44,6 @@ public class EditTestQuestions extends Fragment {
     CoordinatorLayout qLy;
     DB db;
     Cursor cursor;
-    FloatingActionButton fab;
 
     @Override
     public void onDestroy() {
@@ -63,7 +62,6 @@ public class EditTestQuestions extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_test_questions, container, false);
         qLy = (CoordinatorLayout)view.findViewById(R.id.qLy);
-        fab = (FloatingActionButton) view.findViewById(R.id.efab);
 
         db = DataBaseCommunication.db;
         SQLiteDatabase tempDB = db.getWritableDatabase();
@@ -136,7 +134,7 @@ public class EditTestQuestions extends Fragment {
         public void onClick(View v) {
             int itemPosition = ql.indexOfChild(v);
             Intent intent = new Intent(thisShit, EditQuestionActivity.class);
-            intent.putExtra("questionID", questions.get(itemPosition).getID());
+            intent.putExtra("questionN", itemPosition);
             thisShit.startActivity(intent);
         }
     }

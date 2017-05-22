@@ -6,9 +6,14 @@ package com.mavl.youtest.objects;
 public class Option {
     String text;
     boolean correct;
-    Option() {};
+    public Option() {};
 
-    Option(String text, boolean cr) {
+    public Option(String text) {
+        this.text = text;
+        this.correct = false;
+    }
+
+    public Option(String text, boolean cr) {
         this.text = text;
         this.correct = cr;
     }

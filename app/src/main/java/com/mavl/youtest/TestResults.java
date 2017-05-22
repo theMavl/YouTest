@@ -37,6 +37,8 @@ public class TestResults extends AppCompatActivity {
     int resultID;
     int testID;
     int userID;
+    int mark;
+    double score;
     String testName;
     int totalQuestions;
     DB db = DataBaseCommunication.db;
@@ -46,6 +48,8 @@ public class TestResults extends AppCompatActivity {
     TextView tvTimeBegin;
     TextView tvTimeFinish;
     TextView tvDate;
+    TextView tvScore;
+    TextView tvMark;
 
     LinearLayout lyOptions;
     RadioGroup radioGroup;
@@ -62,6 +66,8 @@ public class TestResults extends AppCompatActivity {
         tvTimeBegin = (TextView)findViewById(R.id.tvTimeBegin);
         tvTimeFinish = (TextView)findViewById(R.id.tvTimeFinish);
         tvDate = (TextView)findViewById(R.id.tvDate);
+        tvScore = (TextView)findViewById(R.id.tvScore);
+        tvMark = (TextView)findViewById(R.id.tvMark);
 
         intent = getIntent();
         resultID = intent.getIntExtra("resultID", -1);
@@ -70,7 +76,7 @@ public class TestResults extends AppCompatActivity {
 
         SQLiteDatabase tempDB = db.getWritableDatabase();
         Log.d("get-results", "Trying to get the name of "+resultID);
-        Cursor tmpCursor = tempDB.rawQuery("select results._id, tests.shortName, results.timeBegin, results.timeFinish\n" +
+        Cursor tmpCursor = tempDB.rawQuery("select results._id, tests.shortName, results.timeBegin, results.timeFinish, results.score, results.mark\n" +
                 "from results\n" +
                 "join tests on results.testID = tests._id\n" +
                 "where results._id = ?", new String[]{ resultID+"" });
@@ -78,15 +84,17 @@ public class TestResults extends AppCompatActivity {
         testName = tmpCursor.getString(tmpCursor.getColumnIndex("shortName"));
         tvTestName.setText(testName);
 
-
-
         String[] timeBegin = tmpCursor.getString(tmpCursor.getColumnIndex("timeBegin")).split("\t");
         String[] timeFinish = tmpCursor.getString(tmpCursor.getColumnIndex("timeFinish")).split("\t");
+        mark = tmpCursor.getInt(tmpCursor.getColumnIndex("mark"));
+        score = tmpCursor.getDouble(tmpCursor.getColumnIndex("score"));
 
 
         tvTimeBegin.setText(timeBegin[1]);
         tvTimeFinish.setText(timeFinish[1]);
         tvDate.setText(timeBegin[0]);
+        tvMark.setText(mark+"");
+        tvScore.setText(Math.round(score*100)+"%");
 
         tmpCursor.close();
 
@@ -170,7 +178,7 @@ public class TestResults extends AppCompatActivity {
                 questionPic.setVisibility(View.GONE);
                 for (int i = 0; i < currentQuestion.getOptionsNumber(); i++) {
                     Log.d("render-buttons", "added "+i);
-                    radioButtons[i].setText(currentQuestion.getOption(i));
+                    radioButtons[i].setText(currentQuestion.getOption(i).getText());
                     if ((i+1) == nUserAnswer)
                         radioButtons[i].setChecked(true);
                     else

@@ -1,16 +1,29 @@
 package com.mavl.youtest.listAdapters;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mavl.youtest.R;
 import com.mavl.youtest.objects.Option;
 import com.mavl.youtest.objects.Question;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -20,19 +33,23 @@ import java.util.ArrayList;
 
 public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.ViewHolder> {
     private ArrayList<Option> mDataset;
+    private RadioButton lastCheckedRB = null;
+    Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public EditText optionText;
-        public CheckBox correct;
+        public TextView optionText;
+        public RadioButton correct;
         public ViewHolder(View v) {
             super(v);
-            optionText = (EditText)v.findViewById(R.id.optionText);
-            correct = (CheckBox)v.findViewById(R.id.correct);
+            optionText = (TextView)v.findViewById(R.id.optionText);
+            correct = (RadioButton)v.findViewById(R.id.correct);
         }
     }
 
-    public OptionsListAdapter(ArrayList<Option> myDataset) {
+    public OptionsListAdapter(ArrayList<Option> myDataset, Context context) {
         mDataset = myDataset;
+        this.context = context;
+        Log.d("piii", mDataset.toString());
     }
 
     @Override
@@ -46,13 +63,55 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(OptionsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(OptionsListAdapter.ViewHolder holder, final int position) {
+        final OptionsListAdapter.ViewHolder tmpHolder = holder;
         holder.optionText.setText(mDataset.get(position).getText());
         holder.correct.setChecked(mDataset.get(position).isCorrect());
+        if (mDataset.get(position).isCorrect())
+            lastCheckedRB = holder.correct;
+        holder.correct.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (lastCheckedRB != null) {
+                    lastCheckedRB.setChecked(false);
+                }
+                //store the clicked radiobutton
+                lastCheckedRB = (RadioButton) compoundButton;
+            }
+        });
+        holder.optionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showEditDialog(mDataset.get(position), view);
+                tmpHolder.optionText.setText(mDataset.get(position).getText());
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    private void showEditDialog(final Option option, View kost) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        View view = View.inflate(context, R.layout.password_request, null);
+        final EditText text = (EditText)view.findViewById(R.id.pass);
+        text.setInputType(InputType.TYPE_CLASS_TEXT);
+        text.setText(option.getText());
+        //dialog.setTitle(context.getResources().getString(R.string.request_password));
+        dialog.setView(view);
+        final TextView tv = (TextView)kost;
+        dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String inText = text.getText().toString();
+                        option.setText(inText);
+                        tv.setText(inText);
+                    }
+                });
+
+        dialog.create();
+        dialog.show();
     }
 }
