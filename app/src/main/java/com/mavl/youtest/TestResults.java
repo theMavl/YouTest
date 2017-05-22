@@ -200,12 +200,17 @@ public class TestResults extends AppCompatActivity {
         dialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        lyOptions.removeAllViews();
-                        radioGroup.removeAllViews();
-
                         dialog.dismiss();
                     }
                 });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                lyOptions.removeAllViews();
+                radioGroup.removeAllViews();
+            }
+        });
 
         dialog.create();
         dialog.show();

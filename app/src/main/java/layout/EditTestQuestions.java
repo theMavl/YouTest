@@ -37,7 +37,7 @@ import java.util.Collections;
 public class EditTestQuestions extends Fragment {
     int testID;
     private static RecyclerView ql;
-    private RecyclerView.Adapter qlAdapter;
+    public static RecyclerView.Adapter qlAdapter;
     private RecyclerView.LayoutManager qlManager;
     public static ArrayList<Question> questions;
     static Context thisShit;
@@ -79,7 +79,6 @@ public class EditTestQuestions extends Fragment {
         ql.setLayoutManager(qlManager);
         qlAdapter = new EditQuestionsListAdapter(questions);
         ql.setAdapter(qlAdapter);
-
 
         ItemTouchHelper mIt = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                 ItemTouchHelper.LEFT) {

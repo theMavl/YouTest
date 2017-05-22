@@ -77,6 +77,16 @@ public class Question {
         Log.d("new Question", this.options.toString() +" "+this.options.size()+" "+this);
     }
 
+    public Question(int testID, int number) {
+        this.ID = -2;
+        this.testID = testID;
+        this.type = 0;
+        this.number = number;
+        this.questionText = "Новый вопрос";
+        this.cost = 1;
+        this.time = 0;
+    }
+
     public int getID() {
         return ID;
     }
@@ -223,7 +233,14 @@ public class Question {
         String[] answer = userAnswer.split("\t");
         switch (this.type) {
             case 0:
-                int a = Integer.parseInt(answer[0]);
+                int a;
+                try {
+                    a = Integer.parseInt(answer[0]); }
+                catch (Exception e) {
+                    return 0;
+                }
+                if (a == -1)
+                    return 0;
                 if (options.get(a-1).isCorrect())
                     return this.cost;
                 break;

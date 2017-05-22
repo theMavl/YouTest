@@ -28,6 +28,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.mavl.youtest.objects.Question;
+
 import layout.EditTestParams;
 import layout.EditTestQuestions;
 
@@ -49,8 +51,18 @@ public class EditTestActivity extends AppCompatActivity {
         fa = this;
         appBarLayout = (AppBarLayout)findViewById(R.id.appbar);
         main_content = (CoordinatorLayout)findViewById(R.id.main_content);
-        fab = (FloatingActionButton)findViewById(R.id.eFab);
-        fab.setVisibility(View.GONE);
+        fab = (FloatingActionButton)findViewById(R.id.addFab);
+        fab.hide();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int n = EditTestQuestions.questions.size();
+                EditTestQuestions.questions.add(new Question(testID, n));
+                Intent intent = new Intent(getApplicationContext(), EditQuestionActivity.class);
+                intent.putExtra("questionN", n);
+                startActivity(intent);
+            }
+        });
         Intent intent = getIntent();
         testID = intent.getIntExtra("testID", -1);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -64,13 +76,15 @@ public class EditTestActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                Log.d("li", position+"");
+                Log.d("PAGE-SELECTED", position+"");
                 switch (position) {
-                    case 1:
-                        fab.setVisibility(View.GONE);
+                    case 0:
+                        fab.hide();
+                        Log.e("PAGE-SELECTED", "HIDE FAB");
                         break;
-                    case 2:
-                        fab.setVisibility(View.VISIBLE);
+                    case 1:
+                        fab.show();
+                        Log.e("PAGE-SELECTED", "SHOW FAB");
                         break;
                 }
             }

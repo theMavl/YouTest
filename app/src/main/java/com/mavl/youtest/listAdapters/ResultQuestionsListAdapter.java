@@ -39,7 +39,7 @@ public class ResultQuestionsListAdapter extends CursorAdapter {
         String score = cursor.getString(cursor.getColumnIndex("score"));
         String cost = cursor.getString(cursor.getColumnIndex("cost"));
         // Populate fields with extracted properties
-        tvUA.setText(ua);
+        tvUA.setText(ua.equals("-1")? "нет ответа":ua);
         tvCA.setText(ca);
         tvQT.setText(qt);
         tvScore.setText(score+"/"+cost);

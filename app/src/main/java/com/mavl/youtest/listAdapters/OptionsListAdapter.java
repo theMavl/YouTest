@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.ViewHolder> {
     private ArrayList<Option> mDataset;
     private RadioButton lastCheckedRB = null;
+    private Option lastCorrect;
     Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,16 +68,21 @@ public class OptionsListAdapter extends RecyclerView.Adapter<OptionsListAdapter.
         final OptionsListAdapter.ViewHolder tmpHolder = holder;
         holder.optionText.setText(mDataset.get(position).getText());
         holder.correct.setChecked(mDataset.get(position).isCorrect());
-        if (mDataset.get(position).isCorrect())
+        if (mDataset.get(position).isCorrect()) {
             lastCheckedRB = holder.correct;
+            lastCorrect = mDataset.get(position);
+        }
         holder.correct.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (lastCheckedRB != null) {
                     lastCheckedRB.setChecked(false);
+                    lastCorrect.setCorrect(false);
                 }
                 //store the clicked radiobutton
                 lastCheckedRB = (RadioButton) compoundButton;
+                mDataset.get(position).setCorrect(true);
+                lastCorrect = mDataset.get(position);
             }
         });
         holder.optionText.setOnClickListener(new View.OnClickListener() {

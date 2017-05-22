@@ -3,6 +3,7 @@ package com.mavl.youtest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.IntegerRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -44,6 +45,7 @@ public class EditQuestionActivity extends AppCompatActivity {
     EditText etQuestionText;
     Spinner questionType;
     EditText questionCost;
+    FloatingActionButton fab;
 
 
     @Override
@@ -58,6 +60,7 @@ public class EditQuestionActivity extends AppCompatActivity {
         questionType = (Spinner) findViewById(R.id.spQuestionType);
         questionCost = (EditText) findViewById(R.id.etQuestionCost);
         options = (RecyclerView) findViewById(R.id.rvOptions);
+        fab = (FloatingActionButton) findViewById(R.id.addOptionFab);
         options.getRecycledViewPool().setMaxRecycledViews(0, 12);
         questionType.setEnabled(false);
         intent = getIntent();
@@ -69,9 +72,25 @@ public class EditQuestionActivity extends AppCompatActivity {
 
         arrOptions = (ArrayList) (thisQuestion.options.clone());
         Log.d("CLONE", thisQuestion.options+" "+arrOptions);
-        while (arrOptions.size() < 10)
-            arrOptions.add(new Option());
+        //while (arrOptions.size() < 10)
+        //    arrOptions.add(new Option());
 
+        if (arrOptions.size() > 9)
+            fab.hide();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (arrOptions.size() > 9) {
+                    fab.hide();
+                    return;
+                }
+                arrOptions.add(new Option("Новый вариант"));
+                adapter.notifyItemInserted(arrOptions.size());
+                if (arrOptions.size() > 9)
+                    fab.hide();
+            }
+        });
         qlManager = new LinearLayoutManager(this);
         adapter = new OptionsListAdapter(arrOptions, this);
         options.setLayoutManager(qlManager);
@@ -86,8 +105,9 @@ public class EditQuestionActivity extends AppCompatActivity {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 final int fromPos = viewHolder.getAdapterPosition();
                 final int toPos = target.getAdapterPosition();
-                adapter.notifyItemMoved(fromPos, toPos);
                 Collections.swap(arrOptions, fromPos, toPos);
+                adapter.notifyItemMoved(fromPos, toPos);
+                adapter.notifyDataSetChanged();
                 return false;
             }
 
@@ -98,14 +118,24 @@ public class EditQuestionActivity extends AppCompatActivity {
                 final Option justCopy = arrOptions.get(pos);
                 arrOptions.remove(pos);
                 adapter.notifyItemRemoved(pos);
+                adapter.notifyDataSetChanged();
+                if (!fab.isShown())
+                    fab.show();
                 Snackbar snackbar = Snackbar
                         .make(toolbar, "Option deleted", Snackbar.LENGTH_LONG);
                 snackbar.setAction("Undo", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (arrOptions.size() > 9)
+                        {
+                            Toast.makeText(getApplicationContext(), "No space left!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         Log.d("swipe", "restored "+pos+" "+justCopy.getText());
                         arrOptions.add(pos, justCopy);
                         adapter.notifyItemInserted(pos);
+                        if (arrOptions.size() > 9)
+                            fab.hide();
                     }
                 });
                 snackbar.show();
@@ -136,8 +166,10 @@ public class EditQuestionActivity extends AppCompatActivity {
 
         if (id == R.id.action_save_question) {
             // Save question
-            if(saveQuestion())
+            if(saveQuestion()) {
+                EditTestQuestions.qlAdapter.notifyDataSetChanged();
                 finish();
+            }
             return true;
         }
 
@@ -146,6 +178,7 @@ public class EditQuestionActivity extends AppCompatActivity {
 
     boolean saveQuestion() {
         String text = etQuestionText.getText().toString();
+        boolean foundCorrect = false;
         int cost;
         if (text.equals("")) {
             Toast.makeText(this, "Where is question text?", Toast.LENGTH_LONG).show();
@@ -163,17 +196,27 @@ public class EditQuestionActivity extends AppCompatActivity {
         EditText tmpOption;
 
         for (int i = 0; i < arrOptions.size(); i++) {
-            if (arrOptions.get(i).getText().length() == 0)
+            if (arrOptions.get(i).getText() == null) {// || (arrOptions.get(i).getText().length() == 0))
                 arrOptions.remove(i);
+                continue;
+            }
+            if (arrOptions.get(i).isCorrect())
+                foundCorrect = true;
         }
-        if (arrOptions.size() == 0) {
-            Toast.makeText(this, "All options are empty", Toast.LENGTH_LONG).show();
+        if (arrOptions.size() < 2) {
+            Toast.makeText(this, "Not enough options", Toast.LENGTH_LONG).show();
             return false;
         }
+        if (!foundCorrect) {
+            Toast.makeText(this, "One option must be correct", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
 
         thisQuestion.options = arrOptions;
         thisQuestion.setQuestionText(text);
         thisQuestion.setCost(cost);
+        EditTestQuestions.qlAdapter.notifyDataSetChanged();
         return true;
     }
 
