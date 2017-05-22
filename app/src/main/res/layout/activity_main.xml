@@ -4,37 +4,37 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+
     tools:context="com.mavl.youtest.MainActivity"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/black"
-        android:textAlignment="center"
-        android:layout_alignParentEnd="true" />
-
     <Button
+        android:id="@+id/btTestMode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
         android:text="@string/test_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btTestMode" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/background_light" />
 
     <Button
-        android:text="@string/edit_mode"
+        android:id="@+id/btEditorMode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btEditorMode" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/edit_mode"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/background_light" />
 
     <Button
         android:id="@+id/btStatistic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/statistic_mode" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/statistic_mode"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/background_light" />
 </LinearLayout>

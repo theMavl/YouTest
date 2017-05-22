@@ -122,13 +122,13 @@ public class EditQuestionActivity extends AppCompatActivity {
                 if (!fab.isShown())
                     fab.show();
                 Snackbar snackbar = Snackbar
-                        .make(toolbar, "Option deleted", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Undo", new View.OnClickListener() {
+                        .make(toolbar, "Вариант удален", Snackbar.LENGTH_LONG);
+                snackbar.setAction("Вернуть", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (arrOptions.size() > 9)
                         {
-                            Toast.makeText(getApplicationContext(), "No space left!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Свободного места нет!", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         Log.d("swipe", "restored "+pos+" "+justCopy.getText());
@@ -181,14 +181,14 @@ public class EditQuestionActivity extends AppCompatActivity {
         boolean foundCorrect = false;
         int cost;
         if (text.equals("")) {
-            Toast.makeText(this, "Where is question text?", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Нет текста вопроса", Toast.LENGTH_LONG).show();
             return false;
         }
         try {
             cost = Integer.parseInt(questionCost.getText().toString());
         }
         catch (Exception e) {
-            Toast.makeText(this, "Bad cost value", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Неправильное значение цены вопроса", Toast.LENGTH_LONG).show();
             return false;
         }
         View view;
@@ -204,11 +204,11 @@ public class EditQuestionActivity extends AppCompatActivity {
                 foundCorrect = true;
         }
         if (arrOptions.size() < 2) {
-            Toast.makeText(this, "Not enough options", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Слишком мало вариантов ответа", Toast.LENGTH_LONG).show();
             return false;
         }
         if (!foundCorrect) {
-            Toast.makeText(this, "One option must be correct", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Не найдены правильные варианты", Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -231,13 +231,13 @@ public class EditQuestionActivity extends AppCompatActivity {
 
     void exitByBackKey() {
         final AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("Do you want to quit question editor?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage("Вы действительно хотите выйти из редактора вопроса? Несохраненные изменения будут утеряны")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {}
                 }).show();
     }

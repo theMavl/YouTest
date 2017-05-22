@@ -50,8 +50,8 @@ public class EditQuestionsListAdapter extends RecyclerView.Adapter<EditQuestions
     @Override
     public void onBindViewHolder(EditQuestionsListAdapter.ViewHolder holder, int position) {
         holder.tvText.setText(mDataset.get(position).getQuestionText());
-        holder.tvCost.setText(mDataset.get(position).getCost()+"");
-        holder.tvNumOpt.setText(mDataset.get(position).getOptionsNumber()+"");
+        holder.tvCost.setText("Балл:\t"+mDataset.get(position).getCost()+"");
+        holder.tvNumOpt.setText("Вариантов:\t"+mDataset.get(position).getOptionsNumber()+"");
         holder.theLabel.setOnClickListener(new EditTestQuestions.ShitOnClickListener());
     }
 

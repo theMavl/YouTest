@@ -31,20 +31,22 @@
             android:textAlignment="center" />
 
         <TextView
-            android:text="00:22:21"
+            android:id="@+id/txtTimeStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtTimeStart"
             android:layout_weight="1"
-            android:textAlignment="center" />
+            android:text="00:22:21"
+            android:textAlignment="center"
+            android:visibility="gone" />
 
         <TextView
-            android:text="00:08:11"
+            android:id="@+id/txtTimeLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txtTimeLeft"
             android:layout_weight="1"
-            android:textAlignment="center" />
+            android:text="00:08:11"
+            android:textAlignment="center"
+            android:visibility="gone" />
 
         <TextView
             android:text="1 балл"

@@ -18,7 +18,9 @@ public class Test {
     private int mode = 0;
     private String pass = "";
 
-    public Test() {}
+    public Test() {
+        this.ID = -2;
+    }
 
     public Test(int ID, String shortName, int authorID, int questionNum, String description, int time, boolean random, int mode, String pass) {
         //this.ID = ID;

@@ -1,8 +1,12 @@
 package com.mavl.youtest;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.IntegerRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
@@ -27,8 +31,12 @@ import android.view.ViewGroup;
 
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mavl.youtest.objects.Question;
+import com.mavl.youtest.objects.Test;
+
+import java.util.ArrayList;
 
 import layout.EditTestParams;
 import layout.EditTestQuestions;
@@ -42,6 +50,8 @@ public class EditTestActivity extends AppCompatActivity {
     public static CoordinatorLayout main_content;
     FloatingActionButton fab;
     public static Activity fa;
+    EditTestParams etp;
+    public static ArrayList<String> questionsToDelete = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,13 +124,13 @@ public class EditTestActivity extends AppCompatActivity {
 
     void exitByBackKey() {
         final AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("Do you want to quit test editor?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage("Вы действительно хотите выйти из редактора теста? Несохраненные изменения будут утеряны")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {}
                 }).show();
     }
@@ -139,12 +149,75 @@ public class EditTestActivity extends AppCompatActivity {
 
         if (id == R.id.action_save) {
             // Save test
+            if (saveTest()) {
+                Toast.makeText(getApplicationContext(), "Тест сохранен", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+            else
+                Toast.makeText(getApplicationContext(), "Сохранение не удалось. Проверьте все заново.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    boolean saveTest() {
+        Log.i("save test", "start saving");
+        if (!etp.saveValuesToObject())
+            return false;
+        if (EditTestQuestions.questions.size() == 0)
+            return false;
+        Question.syncNumbersAndPos(EditTestQuestions.questions);
+
+
+        DB db = DataBaseCommunication.db;
+        SQLiteDatabase tempDB = db.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        Test test = EditTestParams.thisTest;
+        cv.put("shortName", test.getShortName());
+        cv.put("authorID", test.getAuthorID());
+        cv.put("time", test.getTime());
+        cv.put("random", test.isRandom());
+        cv.put("pass", test.getPass());
+        cv.put("questionsNum", EditTestQuestions.questions.size());
+        long tTestID = test.getID();
+        if (test.getID() == -2)
+            tTestID = tempDB.insert(DB.TESTS_TABLE, null, cv);
+        else
+            tempDB.update(DB.TESTS_TABLE, cv, "_id = "+test.getID(), null);
+        cv.clear();
+        for (Question x: EditTestQuestions.questions) {
+            cv.put("testID", tTestID);
+            cv.put("questionText", x.getQuestionText());
+            cv.put("time", x.getTime());
+            cv.put("correctOptions", x.getCorrects());
+            cv.put("cost", x.getCost());
+            cv.put("number", x.getNumber());
+            for (int i = 0; i < x.options.size(); i++) {
+                cv.put("option"+(i+1), x.options.get(i).getText());
+            }
+            if (x.getID() == -2)
+                tempDB.insert(DB.QUESTIONS_TABLE, null, cv);
+            else
+                tempDB.update(DB.QUESTIONS_TABLE, cv, "_id = "+x.getID(), null);
+            cv.clear();
+        }
+        tempDB.delete(DB.QUESTIONS_TABLE, "_id = ?", questionsToDelete.toArray(new String[questionsToDelete.size()]));
+        /*Cursor c = tempDB.query(DB.RESULTS_TABLE, new String[]{"_id"}, "testID = "+tTestID, null, null, null, null);
+        if (c.getCount() > 0) {
+            String[] ttt = new String[c.getCount()];
+            int j = 0;
+            c.moveToFirst();
+            do {
+                ttt[j] = c.getInt(0) + "";
+            } while (c.moveToNext());
+            tempDB.delete(DB.BY_QUESTION_RESULTS_TABLE, "resultID = ?", ttt);
+            tempDB.delete(DB.RESULTS_TABLE, "_id = ?", ttt);
+        }
+        c.close();*/
+        tempDB.delete(DB.RESULTS_TABLE, "testID = "+tTestID, null);
+        return true;
+    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -156,8 +229,8 @@ public class EditTestActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-
-                    return EditTestParams.newInstance(testID);
+                    etp = EditTestParams.newInstance(testID);
+                    return etp;
                 case 1:
 
                     return EditTestQuestions.newInstance(testID);

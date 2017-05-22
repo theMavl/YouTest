@@ -97,15 +97,17 @@ public class EditTestQuestions extends Fragment {
                 final int pos = viewHolder.getAdapterPosition();
                 Log.d("swipe", "removed "+pos+" "+questions.get(pos).getQuestionText());
                 final Question justCopy = questions.get(pos);
+                EditTestActivity.questionsToDelete.add(questions.get(pos).getID()+"");
                 questions.remove(pos);
                 qlAdapter.notifyItemRemoved(pos);
                 Snackbar snackbar = Snackbar
-                        .make(EditTestActivity.appBarLayout, "Question deleted", Snackbar.LENGTH_LONG);
-                snackbar.setAction("Undo", new View.OnClickListener() {
+                        .make(EditTestActivity.appBarLayout, "Вопрос удален", Snackbar.LENGTH_LONG);
+                snackbar.setAction("Вернуть", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Log.d("swipe", "restored "+pos+" "+justCopy.getQuestionText());
                         questions.add(pos, justCopy);
+                        EditTestActivity.questionsToDelete.remove(justCopy.getID()+"");
                         qlAdapter.notifyItemInserted(pos);
                     }
                 });

@@ -86,13 +86,13 @@ public class MainActivity extends AppCompatActivity {
         Cursor c = tempDB.query("tests", null, null, null, null, null, null);
         if (!c.moveToFirst()) {
             ContentValues value = new ContentValues();
-            value.put("shortName", "First Test");
+            value.put("shortName", "Первый тест");
             value.put("authorID", 0);
-            value.put("description", "The first test ever just for debug purposes");
+            value.put("description", "Самый первый тест просто для демонстрации");
             value.put("questionsNum", 4);
             tempDB.insert("tests", null, value);
 
-            value.put("shortName", "Second Test");
+            /*value.put("shortName", "Second Test");
             value.put("authorID", 0);
             value.put("description", "The author feels like creating more tests for students");
             value.put("questionsNum", 0);
@@ -111,49 +111,48 @@ public class MainActivity extends AppCompatActivity {
             value.put("shortName", "Fifth Test");
             value.put("authorID", 0);
             value.put("description", "No, really. Enough.");
-            tempDB.insert("tests", null, value);
+            tempDB.insert("tests", null, value);*/
 
             value.clear();
             value.put("testID", 1);
             value.put("number", 1);
-            value.put("questionText", "Troubles?");
+            value.put("questionText", "Какой стороной падает бутерброд с хлебом?");
             value.put("correctOptions", "1");
-            value.put("option1", "Nope");
-            value.put("option2", "So what?");
-            value.put("option3", "Gsdgsadga");
-            value.put("option4", "asdgasdg");
-            value.put("option5", "dsfhsdfh");
-            value.put("option6", "ertgdfgfsd");
-            value.put("option7", "cxvbxcvb");
-            value.put("option8", "ertwert");
-            value.put("option9", "cmvbcv");
-            value.put("option10", "rtgsdfgsd");
+            value.put("option1", "Хлебом вниз");
+            value.put("option2", "Хлебом вверх");
+            value.put("option3", "Хлебом по хлебу");
+            value.put("option4", "Хлебом на бок");
             tempDB.insert("questions", null, value);
-
             value.clear();
             value.put("testID", 1);
             value.put("number", 2);
-            value.put("questionText", "You jerk");
-            value.put("correctOptions", "1");
-            value.put("option1", "Stop doing this");
-            value.put("option2", "Please");
+            value.put("questionText", "Сколько лет Земле?");
+            value.put("correctOptions", "2");
+            value.put("option1", "Миллиарды лет");
+            value.put("option2", "2k17");
+            value.put("option3", "Я Конфуций что ли такие сложные вопросы решать");
+            value.put("option4", "1999");
             tempDB.insert("questions", null, value);
 
             value.put("testID", 1);
             value.put("number", 3);
-            value.put("questionText", "At last you are smart clever enough");
+            value.put("questionText", "Можно ли кушать снег?");
             value.put("correctOptions", "1");
-            value.put("option1", "Noooo");
-            value.put("option2", "Screw you");
+            value.put("option1", "Да");
+            value.put("option2", "Нет");
+            value.put("option3", "Ну");
+            value.put("option4", "Снег не кушают, а употребляют");
             tempDB.insert("questions", null, value);
 
             value.put("testID", 1);
             value.put("number", 4);
             value.put("cost", 4);
-            value.put("questionText", "Shut up");
+            value.put("questionText", "Часы ходят или идут?");
             value.put("correctOptions", "1");
-            value.put("option1", "Damn it");
-            value.put("option2", "Gggg");
+            value.put("option1", "Да");
+            value.put("option2", "Нет");
+            value.put("option3", "Ходят");
+            value.put("option4", "В смысле 'да'?");
             tempDB.insert("questions", null, value);
         }
         c.close();

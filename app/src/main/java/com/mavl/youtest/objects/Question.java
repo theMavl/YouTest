@@ -196,7 +196,12 @@ public class Question {
         String[] arrLine = line.split("\t");
         int n;
         for (int i = 0; i < arrLine.length; i++) {
-            n = Integer.parseInt(arrLine[i]);
+            try {
+                n = Integer.parseInt(arrLine[i]);
+            }
+            catch (Exception e){
+                continue;
+            }
             corrects[n] = true;
         }
         return corrects;
@@ -220,6 +225,15 @@ public class Question {
 
     public String getUserAnswer() {
         return this.userAnswer;
+    }
+
+    public String getCorrects() {
+        String s = "";
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).isCorrect())
+                s += (i+1)+"\t";
+        }
+        return s;
     }
 
     public static void syncNumbersAndPos(ArrayList<Question> qInput) {

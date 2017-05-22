@@ -117,14 +117,14 @@ public class theTest extends AppCompatActivity {
 
     void exitByBackKey() {
         final AlertDialog alertbox = new AlertDialog.Builder(this)
-                .setMessage("Test is not done yet. Are you sure?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage("Вы не ответили на все вопросы. Уверены, что хотите прервать тестирование?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         shitForceEnding = true;
                         applyAnswer();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {}
                 }).show();
     }

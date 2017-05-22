@@ -37,7 +37,7 @@ public class DB extends SQLiteOpenHelper {
                 "shortName TEXT NOT NULL, " +
                 "authorID INTEGER NOT NULL, " +
                 "questionsNum INTEGER NOT NULL DEFAULT 0, " +
-                "description TEXT NOT NULL, " +
+                "description TEXT, " +
                 "time INTEGER NOT NULL DEFAULT 0, " +
                 "random INTEGER NOT NULL DEFAULT 0, " +
                 "mode INTEGER NOT NULL DEFAULT 0, " +

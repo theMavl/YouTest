@@ -93,7 +93,7 @@ public class TestResults extends AppCompatActivity {
         tvTimeBegin.setText(timeBegin[1]);
         tvTimeFinish.setText(timeFinish[1]);
         tvDate.setText(timeBegin[0]);
-        tvMark.setText(mark+"");
+        tvMark.setText(((mark > 1)? mark:2)+"");
         tvScore.setText(Math.round(score*100)+"%");
 
         tmpCursor.close();

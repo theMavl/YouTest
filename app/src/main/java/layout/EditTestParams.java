@@ -49,8 +49,9 @@ public class EditTestParams extends Fragment {
     TextView tvAuthor;
     EditText etName;
     EditText etDescr;
-    Test thisTest;
+    public static Test thisTest;
     Switch swRandom;
+    Switch swPass;
     EditText etPass;
     LinearLayout test_params_ly;
 
@@ -66,16 +67,16 @@ public class EditTestParams extends Fragment {
         swRandom = (Switch) view.findViewById(R.id.swRandom);
         etPass = (EditText) view.findViewById(R.id.etPass);
         test_params_ly = (LinearLayout) view.findViewById(R.id.test_params_ly);
-
+        swRandom.setEnabled(false);
         db = DataBaseCommunication.db;
 
         if (testID == -1)
             onDestroy();
         if (testID == -2) {
-            tvTestID.setText("New test");
+            tvTestID.setText("Новый тест");
             mode = INSERT;
         } else {
-            tvTestID.setText("Test " + testID);
+            tvTestID.setText("Тест #" + testID);
             mode = EDIT;
         }
 
@@ -87,7 +88,7 @@ public class EditTestParams extends Fragment {
         }
 
         final LinearLayout lyPass = (LinearLayout)(view.findViewById(R.id.lyPass));
-        Switch swPass = (Switch) view.findViewById(R.id.swPass);
+        swPass = (Switch) view.findViewById(R.id.swPass);
 
         if (mode == EDIT) {
             cursor = tempDB.query(DB.TESTS_TABLE, null, "_id = " + testID, null, null, null, null);
@@ -102,9 +103,9 @@ public class EditTestParams extends Fragment {
             if (cursor.getCount() > 0)
                 tvAuthor.setText(cursor.getString(cursor.getColumnIndex("displayName")));
             else
-                tvAuthor.setText("Undefined");
+                tvAuthor.setText("Аноним");
 
-            if (pass == null) {
+            if ((pass == null) || (pass.equals(""))) {
                 lyPass.setVisibility(View.GONE);
                 swRandom.setChecked(false);
             }
@@ -136,6 +137,22 @@ public class EditTestParams extends Fragment {
         return view;
     }
 
+    public boolean saveValuesToObject() {
+        String st = etName.getText().toString();
+        if (st.equals("")) {
+            Toast.makeText(getContext(), "Нет названия теста", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        thisTest.setShortName(st);
+        thisTest.setDescription(etDescr.getText().toString());
+        thisTest.setRandom(swRandom.isChecked());
+        if (swPass.isChecked())
+            thisTest.setPass(etPass.getText().toString());
+        else
+            thisTest.setPass("");
+        return true;
+    }
+
     public void showPasswordDialog(final String cp) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
 
@@ -153,7 +170,7 @@ public class EditTestParams extends Fragment {
                             dialog.dismiss();
                         }
                         else {
-                            Toast.makeText(getActivity(), "Wrong password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Неправильный пароль", Toast.LENGTH_SHORT).show();
                             freezeAll();
                         }
                     }

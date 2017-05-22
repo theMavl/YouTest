@@ -41,7 +41,7 @@
                         android:id="@+id/textView13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Author:\t" />
+                        android:text="Автор:\t" />
 
                     <TextView
                         android:id="@+id/tvAuthor"
@@ -76,14 +76,15 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/appbar_padding_top"
-                android:paddingTop="@dimen/appbar_padding_top">
+                android:paddingTop="@dimen/appbar_padding_top"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Type:" />
+                    android:text="Тип:" />
 
                 <Spinner
                     android:id="@+id/spinner"
@@ -96,13 +97,13 @@
                 android:id="@+id/swRandom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Random" />
+                android:text="Случайный порядок" />
 
             <Switch
                 android:id="@+id/swPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Password" />
+                android:text="Пароль на редактирование" />
 
             <LinearLayout
                 android:id="@+id/lyPass"
@@ -113,14 +114,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password:\t" />
+                    android:text="Пароль:\t" />
 
                 <EditText
                     android:id="@+id/etPass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Password" />
+                    android:hint="Введите пароль" />
 
             </LinearLayout>
 
