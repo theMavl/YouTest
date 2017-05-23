@@ -175,6 +175,7 @@ public class EditTestActivity extends AppCompatActivity {
         ContentValues cv = new ContentValues();
         Test test = EditTestParams.thisTest;
         cv.put("shortName", test.getShortName());
+        cv.put("description", test.getDescription());
         cv.put("authorID", test.getAuthorID());
         cv.put("time", test.getTime());
         cv.put("random", test.isRandom());

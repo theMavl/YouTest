@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -46,6 +47,7 @@ public class EditQuestionActivity extends AppCompatActivity {
     Spinner questionType;
     EditText questionCost;
     FloatingActionButton fab;
+    boolean needToRefreshOptions = false;
 
 
     @Override
@@ -99,6 +101,21 @@ public class EditQuestionActivity extends AppCompatActivity {
         etQuestionText.setText(thisQuestion.getQuestionText());
         questionCost.setText(thisQuestion.getCost()+"");
 
+        options.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (needToRefreshOptions) {
+                        Log.i("KEY", "REFRESH THIS STUFF");
+                        adapter.notifyDataSetChanged();
+                        needToRefreshOptions = false;
+                    }
+                }
+                return false;
+            }
+        });
+
+
         ItemTouchHelper mIt = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
                 ItemTouchHelper.LEFT) {
             @Override
@@ -107,9 +124,11 @@ public class EditQuestionActivity extends AppCompatActivity {
                 final int toPos = target.getAdapterPosition();
                 Collections.swap(arrOptions, fromPos, toPos);
                 adapter.notifyItemMoved(fromPos, toPos);
-                adapter.notifyDataSetChanged();
+                needToRefreshOptions = true;
+                //adapter.notifyDataSetChanged();
                 return false;
             }
+
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
@@ -143,6 +162,17 @@ public class EditQuestionActivity extends AppCompatActivity {
         });
         mIt.attachToRecyclerView(options);
     }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
+            if (needToRefreshOptions) {
+                adapter.notifyDataSetChanged();
+                needToRefreshOptions = false;
+            }
+        }
+        return false;
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
